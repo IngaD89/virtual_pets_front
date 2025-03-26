@@ -1,0 +1,72 @@
+/* register.css */
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('/Users/test/IdeaProjects/virtual_pets_front/src/minions_fondo.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+.register-box {
+  background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro para el formulario */
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+  width: 300px;
+}
+
+.register-box h2 {
+  margin-bottom: 20px;
+  color: white;
+}
+
+.input-container {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.input-container label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.8);
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.signup-text {
+  margin-top: 15px;
+}
+
+.signup-text a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.signup-text a:hover {
+  text-decoration: underline;
+}
