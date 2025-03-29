@@ -1,125 +1,136 @@
-/* Home.css */
-
-/* Estilo general del contenedor */
+/* Fondo general para toda la página */
 .home-container {
+  width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #1E3A8A; /* bg-blue-900 */
-  min-height: 100vh;
-  padding: 2.5rem; /* p-10 */
-  color: white;
-  background-image: url('/Users/test/IdeaProjects/virtual_pets_front/src/cueva_minions.jpg'); /* Ruta relativa */
+  justify-content: center;
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-image: url("/Users/test/IdeaProjects/virtual_pets_front/src/cueva_minions.jpg");
+  transition: background-image 0.5s ease-in-out; /* Transición suave */
 }
 
-/* Estilo del mensaje de error */
-.error-message {
-  color: #f87171; /* text-red-500 */
-}
-
-/* Estilo del contenedor cuando no hay mascotas */
+/* Si NO hay mascotas */
 .no-pets-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
-
-/* Estilo de la imagen cuando no hay mascotas */
+/* Imagen oculta cuando no hay mascotas */
 .no-pets-image {
-  position: absolute;
-  width: 0;
-  height: 0;
-  overflow: hidden;
+  display: none;
 }
 
-
-/* Estilo del título cuando no hay mascotas */
+/* Título cuando no hay mascotas */
 .no-pets-title {
-  font-size: 1.5rem; /* text-2xl */
-  color: #FBBF24; /* text-yellow-400 */
+  font-size: 1.5rem;
+  color: #FBBF24;
   font-weight: bold;
-  margin-top: 1rem; /* mt-4 */
+  margin-top: 1rem;
 }
 
-/* Estilo del botón de crear mascota */
-.create-pet-button {
-  background-color: #FBBF24; /* bg-yellow-400 */
-  color: #1E3A8A; /* text-blue-900 */
+/* Estilo del título cuando hay mascotas */
+.pets-title {
+  font-size: 1.5rem;
+  color: #FBBF24;
   font-weight: bold;
-  padding: 0.75rem 1.5rem; /* px-6 py-3 */
-  border-radius: 0.5rem; /* rounded-lg */
-  margin-top: 1.5rem; /* mt-6 */
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Botón de crear mascota */
+.create-pet-button {
+  background-color: #FBBF24;
+  width: 250px;
+  color: #1E3A8A;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  margin-top: 1.5rem;
   transition: all 0.3s ease;
 }
 
 .create-pet-button:hover {
-  background-color: #F59E0B; /* hover:bg-yellow-500 */
+  background-color: #F59E0B;
 }
 
-/* Estilo de la lista de mascotas */
+/* Contenedor de mascotas */
 .pets-container {
   width: 100%;
-}
-
-.pets-title {
-  font-size: 1.5rem; /* text-2xl */
-  color: #FBBF24; /* text-yellow-400 */
-  font-weight: bold;
   text-align: center;
-  margin-bottom: 1.5rem; /* mb-6 */
 }
 
+/* Lista de mascotas */
 .pets-list {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 1.5rem; /* space-x-6 */
+  gap: 1.5rem;
 }
 
-/* Estilo de cada tarjeta de mascota */
+/* Tarjeta de mascota */
 .pet-card {
-  border: 4px solid #FBBF24; /* border-4 border-yellow-400 */
-  padding: 1rem; /* p-4 */
-  border-radius: 0.5rem; /* rounded-lg */
+  padding: 1rem;
+  border: 3px solid #FBBF24;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+  width: 150px;
   background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  color: black;
 }
 
+.pet-card:hover {
+  transform: scale(1.05);
+}
+
+/* Imagen de la mascota */
 .pet-card img {
-  width: 8rem; /* w-32 */
-  height: 8rem; /* h-32 */
+  width: 8rem;
+  height: 8rem;
   object-fit: cover;
-  margin: 0 auto;
+  margin-bottom: 0.5rem;
 }
 
+/* Nombre de la mascota */
 .pet-card-name {
-  font-size: 1.125rem; /* text-lg */
-  font-weight: 600; /* font-semibold */
-  margin-top: 0.5rem; /* mt-2 */
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
 }
 
+/* Botones de la tarjeta de mascota */
 .pet-card-buttons {
   display: flex;
   justify-content: space-around;
-  margin-top: 0.75rem; /* mt-3 */
+  width: 100%;
+  margin-top: 0.75rem;
 }
 
 .pet-card-button {
   font-size: 1.25rem;
+  cursor: pointer;
+  border: none;
+  background: none;
 }
 
+/* Iconos de botones */
 .view-button {
-  color: #2563EB; /* text-blue-600 */
+  color: #2563EB;
 }
 
 .edit-button {
-  color: #10B981; /* text-green-600 */
+  color: #10B981;
+  font-size: 2rem; /* Icono más grande */
 }
 
 .delete-button {
-  color: #EF4444; /* text-red-600 */
+  color: #EF4444;
 }

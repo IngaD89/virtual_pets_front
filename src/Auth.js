@@ -1,4 +1,4 @@
-// auth.js
+// Auth.js
 
 // Función para obtener el token del localStorage
 export const getToken = () => {

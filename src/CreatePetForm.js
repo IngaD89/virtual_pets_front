@@ -1,7 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { isAuthenticated, getToken } from "./Auth"; // Asegúrate de que la ruta sea correcta
+import { useNavigate } from "react-router-dom";
 import "./CreatePetForm.css";  // Asegúrate de que esta ruta sea correcta
 
 export default function CreatePetForm() {
+  const navigate = useNavigate(); // Inicializa el hook de navegación
+
+  // Verificar si el usuario está autenticado al inicio
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      navigate("/login"); // Redirige al login si no está autenticado
+    }
+  }, [navigate]);
+
   // Definir los personajes de la mascota directamente en el frontend
   const characters = [
     { id: "KEVIN", name: "Kevin", imageUrl: "/kevin.jpg" },
@@ -24,17 +35,27 @@ export default function CreatePetForm() {
     }
 
     setIsSaving(true);
+    const token = getToken();  // Obtener el token de autenticación
+
     try {
-      await fetch("http://localhost:8080/pets", {
+      const response = await fetch("http://localhost:8080/pets", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ petCharacter: selectedPet, name: petName })
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`, // Incluir el token en la cabecera
+        },
+        body: JSON.stringify({ petCharacter: selectedPet, name: petName }),
       });
+
+      if (!response.ok) {
+        throw new Error("Failed to create pet");
+      }
+
       alert("Pet saved successfully!");
       setPetName("");
       setSelectedPet(null);
     } catch (error) {
-      alert("Error saving pet.");
+      alert("Error saving pet: " + error.message);
     }
     setIsSaving(false);
   };

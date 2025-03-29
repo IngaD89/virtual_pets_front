@@ -2,69 +2,94 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { isAuthenticated, fetchProtectedData, getToken } from "./Auth";
 import './Home.css';  // Importa el archivo CSS
+import { petImages } from './PetImages'; // Ajusta la ruta si es necesario
 
 export default function Home() {
   const navigate = useNavigate();
   const [pets, setPets] = useState([]);
   const [error, setError] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
-  const [decodedToken, setDecodedToken] = useState(null); // Estado para almacenar el decodedToken
+  const [decodedToken, setDecodedToken] = useState(null);
 
-  // Obtener rol del usuario desde el token
   const checkUserRole = () => {
     const token = getToken();
     if (!token) return;
 
     try {
-      const decoded = JSON.parse(atob(token.split(".")[1])); // Decodificar JWT
-      setDecodedToken(decoded); // Guardar el decodedToken en el estado
+      const decoded = JSON.parse(atob(token.split(".")[1]));
+      setDecodedToken(decoded);
       setIsAdmin(decoded.role === "admin");
     } catch (error) {
       console.error("Error al decodificar el token:", error);
     }
   };
 
-  const fetchPets = useCallback(async () => { // Usa useCallback para memorizar la función
-     if (!isAuthenticated()) {
-       setError("No estás autenticado");
-       navigate("/login");
-       return;
-     }
-
-     if (!decodedToken) return; // Asegurarse de que decodedToken esté disponible
-
-
-  try {
-    const data = await fetchProtectedData("http://localhost:8080/pets");
-
-    // Verificar si la respuesta contiene datos
-    if (data && data.length > 0) {
-      setPets(isAdmin ? data : data.filter(pet => pet.owner === decodedToken.userId));
-    } else {
-      setPets([]);
+  const fetchPets = useCallback(async () => {
+    if (!isAuthenticated()) {
+      setError("No estás autenticado");
+      navigate("/login");
+      return;
     }
-  } catch (error) {
-    console.error("Error al cargar las mascotas", error);
-    setError("Error al cargar las mascotas");
-  }
-}, [decodedToken, isAdmin, navigate]); // Se agregan las dependencias de decodedToken, isAdmin, y navigate
 
-   // Efecto al cargar la página para obtener el rol del usuario
-   useEffect(() => {
-     checkUserRole();
-   }, []); // Solo llamamos checkUserRole cuando se monta el componente
+    if (!decodedToken) return;
 
-   // Efecto al cambiar decodedToken
-   useEffect(() => {
-     if (decodedToken) {
-       fetchPets(); // Llamar a fetchPets solo después de obtener decodedToken
-     }
-   }, [decodedToken, fetchPets]); // Ahora 'fetchPets' es una dependencia memorizada
+    try {
+      const data = await fetchProtectedData("http://localhost:8080/pets");
+      if (data && data.length > 0) {
+        setPets(isAdmin ? data : data.filter(pet => pet.owner === decodedToken.userId));
+      } else {
+        setPets([]);
+      }
+    } catch (error) {
+      console.error("Error al cargar las mascotas", error);
+      setError("Error al cargar las mascotas");
+    }
+  }, [decodedToken, isAdmin, navigate]);
 
-   // Redirigir a la creación de mascotas
-   const handleCreatePet = () => {
-     navigate("/create-pet");
-   };
+  useEffect(() => {
+    checkUserRole();
+  }, []);
+
+  useEffect(() => {
+    if (decodedToken) {
+      fetchPets();
+    }
+  }, [decodedToken, fetchPets]);
+
+  const handleCreatePet = () => {
+    navigate("/create-pet");
+  };
+
+  const handleViewPet = async (petId) => {
+    try {
+      const petData = await fetchProtectedData(`http://localhost:8080/pets/${petId}`);
+      navigate(`/virtual-pet/${petId}`, { state: { pet: petData } });
+    } catch (error) {
+      console.error("Error al obtener los detalles de la mascota:", error);
+      setError("Error al obtener los detalles de la mascota");
+    }
+  };
+
+  const handleDeletePet = async (petId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/pets/${petId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${getToken()}`,
+          "Content-Type": "application/json"
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al eliminar la mascota");
+      }
+
+      setPets((prevPets) => prevPets.filter(p => p.id !== petId));
+    } catch (error) {
+      console.error("Error al eliminar la mascota:", error);
+      setError("No se pudo eliminar la mascota.");
+    }
+  };
 
   return (
     <div className="home-container">
@@ -73,44 +98,58 @@ export default function Home() {
       {pets.length === 0 ? (
         <div className="no-pets-container">
           <img
-            src="/Users/test/IdeaProjects/virtual_pets_front/src/cueva_minions.jpg" // Asegúrate de que la ruta sea correcta
+            src="/Users/test/IdeaProjects/virtual_pets_front/src/cueva_minions.jpg"
             alt="No pets"
             className="no-pets-image"
           />
-          <h1 className="no-pets-title">
-            You don’t have any pet yet
-          </h1>
-          <button
-            onClick={handleCreatePet}
-            className="create-pet-button"
-          >
-            Create your minion
-          </button>
+          <h1 className="no-pets-title">You don’t have any pet yet</h1>
         </div>
       ) : (
         <div className="pets-container">
-          <h1 className="pets-title">
-            Your minions
-          </h1>
+          <h1 className="pets-title">Your minions</h1>
           <div className="pets-list">
-            {pets.map((pet) => (
-              <div key={pet.id} className="pet-card">
-                <img
-                  src={pet.imageUrl}
-                  alt={pet.name}
-                  className="w-32 h-32 object-cover mx-auto"
-                />
-                <p className="pet-card-name">{pet.name}</p>
-                <div className="pet-card-buttons">
-                  <button className="view-button pet-card-button">👁 View</button>
-                  <button className="edit-button pet-card-button">✏ Edit</button>
-                  <button className="delete-button pet-card-button">🗑 Delete</button>
+            {pets.map((pet) => {
+              const petCharacter =
+                pet.petCharacter.charAt(0).toUpperCase() + pet.petCharacter.slice(1).toLowerCase();
+              const petType = pet.energy < 20 || pet.hunger < 20 ? "purple" : "yellow";
+              const petImage = petImages[petCharacter]?.[petType] || "/default-image.png";
+
+              return (
+                <div key={pet.id} className="pet-card">
+                  <img
+                    src={petImage}
+                    alt={pet.name}
+                    className="w-32 h-32 object-cover mx-auto"
+                  />
+                  <p className="text-center mt-2 font-semibold">{pet.name}</p>
+                  <div className="pet-card-buttons">
+                    <button
+                      onClick={() => handleViewPet(pet.id)}
+                      className="view-button pet-card-button"
+                    >
+                      👁
+                    </button>
+                    <button className="edit-button pet-card-button"> ✏ </button>
+                    <button
+                      onClick={() => handleDeletePet(pet.id)}
+                      className="delete-button pet-card-button"
+                    >
+                      🗑
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
+
+      <button
+        onClick={handleCreatePet}
+        className="create-pet-button"
+      >
+        Create your minion
+      </button>
     </div>
   );
 }
