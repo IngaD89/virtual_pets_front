@@ -55,3 +55,8 @@ export const fetchProtectedData = async (url, options = {}) => {
     throw new Error(`Error en la solicitud protegida: ${error.message}`);
   }
 };
+
+// Función para hacer logout (borrar el token del localStorage)
+export const logout = () => {
+  localStorage.removeItem('authToken');  // Elimina el token del localStorage
+};

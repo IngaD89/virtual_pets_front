@@ -9,7 +9,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("/Users/test/IdeaProjects/virtual_pets_front/src/cueva_minions.jpg");
+  background-image: url("/Users/test/IdeaProjects/virtual_pets_front/src/cueva_gpt.png");
   transition: background-image 0.5s ease-in-out; /* Transición suave */
 }
 

@@ -1,24 +1,27 @@
+/* Contenedor principal */
 .virtual-pet-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   height: 100vh;
-  background-image: url('/Users/test/IdeaProjects/virtual_pets_front/src/minions_fondo.jpg'); /* Ajusta la URL según corresponda */
+  background-image: url("/Users/test/IdeaProjects/virtual_pets_front/src/grus_lab_2.png"); /* Imagen en public/ */
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   color: white;
   position: relative;
 }
 
-/* Contenedor de las barras de estado */
+/* Contenedor de barras de estado */
 .status-bar {
   position: absolute;
-  top: 5%;
-  left: 3%;
+  top: 10%;
+  left: 5%;
   width: 300px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 /* Contenedor de cada barra */
@@ -39,31 +42,42 @@
 /* Barra de estado */
 .status-item {
   width: 100%;
-  height: 25px;
-  background-color: white;
-  border-radius: 20px;
+  height: 20px;
+  background-color: gray;
+  border-radius: 10px;
   overflow: hidden;
-  position: relative;
   border: 2px solid black;
 }
 
 /* Parte rellena de la barra */
 .status-fill {
   height: 100%;
-  border-radius: 20px;
   transition: width 0.3s ease-in-out;
 }
 
 .status-happiness {
-  background-color: #4CAF50; /* Verde */
+  background-color: green;
 }
 
 .status-hunger {
-  background-color: #D6A600; /* Amarillo */
+  background-color: orange;
 }
 
 .status-energy {
-  background-color: #E67E22; /* Naranja */
+  background-color: blue;
+}
+
+/* Imagen de la mascota */
+.pet-image {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.character-img {
+  width: 180px;
+  height: auto;
 }
 
 /* Botones de acción */
@@ -90,17 +104,4 @@
 
 .btn-play:hover, .btn-feed:hover {
   background-color: #2C3E50;
-}
-
-/* Imagen de la mascota */
-.pet-image {
-  position: absolute;
-  bottom: 8%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.character-img {
-  width: 180px;
-  height: auto;
 }

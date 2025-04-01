@@ -1,95 +1,129 @@
 import React, { useState, useEffect } from "react";
-import { isAuthenticated, fetchProtectedData } from "./Auth"; // Asegúrate de que la ruta es correcta
+import { useParams } from "react-router-dom";
+import { isAuthenticated, getToken } from "./Auth";
+import { petImages } from "./PetImages";
+import usePetUpdates from "./UsePetUpdates";
+import "./VirtualPet.css";
 
-export default function VirtualPet({ character, petId }) {
-  const [happiness, setHappiness] = useState(100);
-  const [hunger, setHunger] = useState(100);
-  const [energy, setEnergy] = useState(100);
+export default function VirtualPet() {
+  const { petId } = useParams();
+  const [pet, setPet] = useState(null);
+
+  // Usamos el hook para obtener las actualizaciones en tiempo real
+  const { happiness, hunger, energy } = usePetUpdates(petId, 100, 100, 100);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setHunger((prev) => Math.max(0, prev - 5));
-      setEnergy((prev) => Math.min(100, prev + 5));
-    }, 6000);
+    if (!petId || !isAuthenticated()) return;
 
-    return () => clearInterval(interval);
-  }, []);
+    const token = getToken();
 
-  const getColor = (value) => {
-    if (value > 70) return "bg-green-500";
-    if (value > 40) return "bg-yellow-500";
-    return "bg-red-500";
-  };
+    fetch(`http://localhost:8080/pets/${petId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.petCharacter) {
+          setPet(data);
+        } else {
+          console.error("La respuesta no contiene petCharacter:", data);
+        }
+      })
+      .catch((error) => console.error("Error fetching pet:", error));
+  }, [petId]);
 
-  const handleAction = async (action) => {
+  const petCharacter = pet ? pet.petCharacter.charAt(0).toUpperCase() + pet.petCharacter.slice(1).toLowerCase() : "";
+  const petType = energy < 20 || hunger < 20 ? "purple" : "yellow";
+  const petImage = petImages[petCharacter]?.[petType] || "oops-transparent.png";
+
+  // Función para manejar la acción 'JUGAR'
+  const handlePlay = async () => {
     if (!isAuthenticated()) {
       alert("No estás autenticado. Inicia sesión para realizar esta acción.");
       return;
     }
 
     try {
-      const response = await fetchProtectedData(`/pets/${petId}?action=${action}`, {
+      const url = `http://localhost:8080/pets/${petId}/play`;
+      const token = getToken();
+
+      const response = await fetch(url, {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       });
 
       if (response.ok) {
-        if (action === "play") {
-          setHappiness((prev) => Math.min(100, prev + 20));
-          setEnergy((prev) => Math.max(0, prev - 10));
-        } else if (action === "feed") {
-          setHunger((prev) => Math.min(100, prev + 20));
-          setEnergy((prev) => Math.min(100, prev + 10));
-        }
-      } else {
-        const errorMessage = await response.text();
-        alert(errorMessage);
+        alert("Acción 'JUGAR' realizada con éxito.");
       }
     } catch (error) {
-      console.error(error);
-      alert(`Error al realizar la acción ${action}.`);
+      console.error("Error al realizar la acción 'JUGAR':", error);
+      alert("No se pudo realizar la acción 'JUGAR'.");
+    }
+  };
+
+  // Función para manejar la acción 'ALIMENTAR'
+  const handleFeed = async () => {
+    if (!isAuthenticated()) {
+      alert("No estás autenticado. Inicia sesión para realizar esta acción.");
+      return;
+    }
+
+    try {
+      const url = `http://localhost:8080/pets/${petId}/feed`;
+      const token = getToken();
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        alert("Acción 'ALIMENTAR' realizada con éxito.");
+      }
+    } catch (error) {
+      console.error("Error al realizar la acción 'ALIMENTAR':", error);
+      alert("No se pudo realizar la acción 'ALIMENTAR'.");
     }
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-lg shadow-lg p-6 text-center mt-10">
-      {/* Header con barras de estado */}
-      <header className="mb-4">
-        {[
-          { label: "😊 Felicidad", value: happiness },
-          { label: "🍲 Hambre", value: hunger },
-          { label: "⚡ Energía", value: energy },
-        ].map((status, index) => (
-          <div key={index} className="mb-3">
-            <div className="text-sm font-semibold text-gray-700 mb-1">{status.label}</div>
-            <div className="w-full h-6 bg-gray-300 rounded-full overflow-hidden">
-              <div className={`h-full ${getColor(status.value)} transition-all duration-500`} style={{ width: `${status.value}%` }}></div>
-            </div>
+    <div className="virtual-pet-container">
+      <h1>{pet?.name}</h1>
+      <div className="status-bar">
+        <div className="status-item-container">
+          <div className="status-item-label">😊 Felicidad</div>
+          <div className="status-item">
+            <div className="status-fill status-happiness" style={{ width: `${happiness}%` }}></div>
           </div>
-        ))}
-      </header>
-
-      {/* Imagen de la mascota */}
-      <div className="mb-6">
-        <img src={`/${character}.png`} alt={character} className="mx-auto w-40 h-40 object-cover" />
+        </div>
+        <div className="status-item-container">
+          <div className="status-item-label">🍌 Hambre</div>
+          <div className="status-item">
+            <div className="status-fill status-hunger" style={{ width: `${hunger}%` }}></div>
+          </div>
+        </div>
+        <div className="status-item-container">
+          <div className="status-item-label">🧪 Energía</div>
+          <div className="status-item">
+            <div className="status-fill status-energy" style={{ width: `${energy}%` }}></div>
+          </div>
+        </div>
       </div>
-
-      {/* Botones de acción */}
-      <div className="flex justify-center gap-4">
-        <button
-          onClick={() => handleAction("play")}
-          className="w-32 px-4 py-2 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600 transition"
-        >
-          JUGAR
-        </button>
-        <button
-          onClick={() => handleAction("feed")}
-          className="w-32 px-4 py-2 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition"
-        >
-          ALIMENTAR
-        </button>
+      <div className="pet-image">
+        <img src={petImage} alt={petCharacter} className="character-img" />
+      </div>
+      <div className="action-buttons">
+        <button onClick={handlePlay} className="btn-play">JUGAR</button>
+        <button onClick={handleFeed} className="btn-feed">ALIMENTAR</button>
       </div>
     </div>
   );

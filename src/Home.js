@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { isAuthenticated, fetchProtectedData, getToken } from "./Auth";
-import './Home.css';  // Importa el archivo CSS
-import { petImages } from './PetImages'; // Ajusta la ruta si es necesario
+import './Home.css';
+import { petImages } from './PetImages';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -60,14 +60,8 @@ export default function Home() {
     navigate("/create-pet");
   };
 
-  const handleViewPet = async (petId) => {
-    try {
-      const petData = await fetchProtectedData(`http://localhost:8080/pets/${petId}`);
-      navigate(`/virtual-pet/${petId}`, { state: { pet: petData } });
-    } catch (error) {
-      console.error("Error al obtener los detalles de la mascota:", error);
-      setError("Error al obtener los detalles de la mascota");
-    }
+  const handleViewPet = (petId) => {
+    navigate(`/virtual-pet/${petId}`); // Solo redirige
   };
 
   const handleDeletePet = async (petId) => {
