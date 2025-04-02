@@ -14,12 +14,20 @@ const NavBar = () => {
 
   const handleCreateMinion = () => {
     // Redirige a la página para crear un minion
-    navigate('/create-minion');
+    navigate('/create-pet');
+  };
+
+  const handleHome = () => {
+    // Redirige a la página de inicio
+    navigate('/');
   };
 
   return (
     <nav>
       <ul>
+        <li>
+          <button onClick={handleHome}>Home</button>
+        </li>
         {isAuthenticated() ? (
           <>
             <li>

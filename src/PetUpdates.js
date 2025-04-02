@@ -37,9 +37,11 @@ const PetUpdates = () => {
     <div>
       <h2>Actualizaciones de Mascotas</h2>
       <ul>
-        {pets.map((pet) => (
-          <li key={pet.id}>{pet.name} - Energía: {pet.energyLevel}</li>
-        ))}
+       {pets.map((pet) => (
+                 <li key={pet.id}>
+                   {pet.name} - Energía: {pet.energyLevel} - Hambre: {pet.hungerLevel} - Felicidad: {pet.happinessLevel}
+                 </li>
+               ))}
       </ul>
     </div>
   );

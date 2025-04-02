@@ -4,11 +4,11 @@
 export const petImages = {
   Kevin: {
     yellow: "/kevin-transparent.png",   // Ruta de la imagen para Kevin amarillo
-    purple: "purple_kevin-transparent.png"    // Ruta de la imagen para Kevin morado
+    purple: "/purple_kevin-transparent.png"    // Ruta de la imagen para Kevin morado
   },
   Bob: {
     yellow: "/bob.png",     // Ruta de la imagen para Bob amarillo
-    purple: "purple_bob-transparent.png"      // Ruta de la imagen para Bob morado
+    purple: "/purple_bob-transparent.png"      // Ruta de la imagen para Bob morado
   },
   Stuart: {
     yellow: "/stuart.png",  // Ruta de la imagen para Stuart amarillo

@@ -9,7 +9,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("/Users/test/IdeaProjects/virtual_pets_front/src/cueva_gpt.png");
+  background-image: url("/Users/test/IdeaProjects/virtual_pets_front/src/banana_oscuro.png");
   transition: background-image 0.5s ease-in-out; /* Transición suave */
 }
 
@@ -112,6 +112,7 @@
   justify-content: space-around;
   width: 100%;
   margin-top: 0.75rem;
+  gap: 1rem; /* Agrega espacio entre los botones */
 }
 
 .pet-card-button {
@@ -119,18 +120,28 @@
   cursor: pointer;
   border: none;
   background: none;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
 }
 
-/* Iconos de botones */
+/* Botón de "ver detalles" */
 .view-button {
   color: #2563EB;
+  border: 2px solid #28a745; /* Borde verde */
+  padding: 0.5rem;
 }
 
-.edit-button {
-  color: #10B981;
-  font-size: 2rem; /* Icono más grande */
+.view-button:hover {
+  background-color: #28a745; /* Cambia a verde al pasar el cursor */
 }
 
+/* Botón de "eliminar" */
 .delete-button {
-  color: #EF4444;
+  color: #EF4444; /* Color de texto rojo */
+  border: 2px solid #FF0000; /* Borde rojo */
+  padding: 0.5rem;
+}
+
+.delete-button:hover {
+  background-color: #FF0000; /* Cambia el texto a rojo al pasar el cursor */
 }

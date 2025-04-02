@@ -12,6 +12,28 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+/* App.css */
+
+/* Estilo general de la app con fondo por defecto */
+.App-container {
+  background-image: url('/Users/test/IdeaProjects/virtual_pets_front/src/minions_fondo.jpg'); /* Fondo por defecto */
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh; /* Hace que ocupe toda la pantalla */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fondo específico para la página de inicio */
+.home-background {
+  background-image: url('/Users/test/IdeaProjects/virtual_pets_front/src/platanos_pequeños_gpt.png');
+}
+
+/* Fondo específico para la página de mascotas */
+.pets-background {
+  background-image: url('/Users/test/IdeaProjects/virtual_pets_front/src/platanos_pequeños_gpt.png');
+}
+
 
 .App-header {
   background-color: #282c34;

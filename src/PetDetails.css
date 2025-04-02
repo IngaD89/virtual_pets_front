@@ -16,7 +16,7 @@
 /* Contenedor de barras de estado */
 .status-bar {
   position: absolute;
-  top: 10%;
+  top: 20%; /* Bajado desde 15% */
   left: 5%;
   width: 300px;
   display: flex;
@@ -73,17 +73,24 @@
   bottom: 8%;
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
+  justify-content: center;  /* Centra la imagen */
+  align-items: center;      /* Centra la imagen */
 }
 
+/* Estilo de la imagen de la mascota */
 .character-img {
-  width: 180px;
+  max-width: 150px;   /* Tamaño máximo ajustado */
+  max-height: 150px;  /* Tamaño máximo ajustado */
+  width: auto;
   height: auto;
+  object-fit: contain; /* Ajusta la imagen sin distorsionarla */
 }
 
 /* Botones de acción */
 .action-buttons {
   position: absolute;
-  top: 15%;
+  top: 25%; /* Bajado desde 15% */
   right: 5%;
   display: flex;
   flex-direction: column;
@@ -92,8 +99,8 @@
 
 .btn-play, .btn-feed {
   padding: 14px 32px;
-  background-color: #354A72;
-  color: white;
+  background-color: #FFD700; /* Amarillo dorado */
+  color: black;  /* Texto en negro */
   border-radius: 12px;
   cursor: pointer;
   font-size: 18px;
@@ -103,5 +110,5 @@
 }
 
 .btn-play:hover, .btn-feed:hover {
-  background-color: #2C3E50;
+  background-color: #FFC107; /* Amarillo más oscuro */
 }

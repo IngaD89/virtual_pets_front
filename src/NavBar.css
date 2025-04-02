@@ -1,23 +1,57 @@
-/* styles.css */
+/* Navbar */
 nav {
-  background-color: #333;
-  padding: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 55px; /* Reducido */
+  background: rgba(90, 90, 90, 0.6);
+  padding: 10px 15px; /* Padding más compacto */
+  display: flex;
+  justify-content: center; /* Centrar los botones */
+  align-items: center;
+  transition: background 0.3s ease;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
 }
 
+nav:hover {
+  background: rgba(70, 70, 70, 0.7);
+}
+
+/* Lista de los botones */
 nav ul {
   list-style: none;
   display: flex;
-  justify-content: space-around;
+  gap: 15px; /* Espaciado más compacto */
+  margin: 0;
+  padding: 0;
 }
 
+/* Elementos de la lista */
+nav ul li {
+  display: inline-block;
+}
+
+/* Botones */
 nav ul li button {
-  color: white;
-  background-color: #007bff;
+  color: black;
+  background-color: #FFD700; /* Amarillo brillante */
   border: none;
-  padding: 10px 20px;
+  padding: 10px 20px; /* Botón más pequeño */
   cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 6px; /* Bordes menos redondeados */
+  transition: background 0.3s ease-in-out, transform 0.2s;
 }
 
 nav ul li button:hover {
-  background-color: #0056b3;
+  background-color: #FFC107; /* Amarillo más oscuro en hover */
+  transform: scale(1.05);
+}
+
+nav ul li button:focus {
+  outline: none;
 }

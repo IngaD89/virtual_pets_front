@@ -3,7 +3,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #2c4877;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("/Users/test/IdeaProjects/virtual_pets_front/src/banana_oscuro.png");
   height: 100vh;
   padding: 10rem;
   text-align: center;
@@ -35,6 +38,8 @@
   transition: transform 0.3s ease;
   width: 120px; /* Reducido el tamaño */
   background-color: white;
+  position: relative; /* Necesario para posicionar el nombre dentro de la tarjeta */
+  overflow: hidden; /* Para evitar que la imagen se salga de los bordes */
 }
 
 .character-item.selected {
@@ -50,17 +55,28 @@
   margin-bottom: 0.5rem;
 }
 
+/* Nombre de la mascota */
 .character-name {
   font-weight: bold;
   color: #1E3A8A;
+  height: 2rem; /* Altura fija */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: absolute;
+  bottom: 0; /* Se alinea al fondo de la tarjeta */
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.7); /* Fondo semitransparente para mejorar la legibilidad */
 }
+
 
 /* Estilo del campo de entrada de nombre */
 .name-input {
   width: 35%; /* Más estrecho */
   padding: 12px; /* Más grueso */
   border-radius: 5px;
-  border: none;
+  border: 3px solid #f4a701;
   text-align: center;
   margin-bottom: 10px;
   font-size: 14px;
@@ -69,20 +85,18 @@
 
 /* Estilo del botón de guardar */
 .save-button {
-  background-color: transparent;
-  border: 2px solid #f4a701;
-  color: white;
-  padding: 15px 10px; /* Más grueso y más estrecho */
-  font-size: 14px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  width: 120px; /* Mucho más estrecho */
+ background-color: #FBBF24;
+  width: 250px;
+  color: #1E3A8A;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  margin-top: 1.5rem;
+  transition: all 0.3s ease;
 }
 
 .save-button:hover {
-  background-color: #f4a701;
-  color: #2c4877;
+  background-color: #F59E0B;
 }
 
 .save-button:disabled {

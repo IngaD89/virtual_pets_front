@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { isAuthenticated, getToken } from "./Auth";
-import { petImages } from "./PetImages";
+//import { petImages } from "./PetImages";
 import usePetUpdates from "./UsePetUpdates";
-import "./VirtualPet.css";
+import ChangePetImages from "./ChangePetImages.js"
+import "./PetDetails.css";
 
-export default function VirtualPet() {
+export default function PetDetails() {
   const { petId } = useParams();
   const [pet, setPet] = useState(null);
 
-  // Usamos el hook para obtener las actualizaciones en tiempo real
-  const { happiness, hunger, energy } = usePetUpdates(petId, 100, 100, 100);
-
+  // Obtener detalles iniciales de la mascota desde el backend
   useEffect(() => {
     if (!petId || !isAuthenticated()) return;
 
@@ -35,14 +34,19 @@ export default function VirtualPet() {
       .catch((error) => console.error("Error fetching pet:", error));
   }, [petId]);
 
-  const petCharacter = pet ? pet.petCharacter.charAt(0).toUpperCase() + pet.petCharacter.slice(1).toLowerCase() : "";
-  const petType = energy < 20 || hunger < 20 ? "purple" : "yellow";
-  const petImage = petImages[petCharacter]?.[petType] || "oops-transparent.png";
+  // Hook para obtener actualizaciones en tiempo real
+  const { happiness, hunger, energy } = usePetUpdates(
+    petId,
+    pet?.happinessLevel,
+    pet?.hungerLevel,
+    pet?.energyLevel
+  );
+
+  if (!pet) return <div>Cargando mascota...</div>;
 
   // Función para manejar la acción 'JUGAR'
   const handlePlay = async () => {
     if (!isAuthenticated()) {
-      alert("No estás autenticado. Inicia sesión para realizar esta acción.");
       return;
     }
 
@@ -50,27 +54,21 @@ export default function VirtualPet() {
       const url = `http://localhost:8080/pets/${petId}/play`;
       const token = getToken();
 
-      const response = await fetch(url, {
+      await fetch(url, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
-
-      if (response.ok) {
-        alert("Acción 'JUGAR' realizada con éxito.");
-      }
     } catch (error) {
       console.error("Error al realizar la acción 'JUGAR':", error);
-      alert("No se pudo realizar la acción 'JUGAR'.");
     }
   };
 
   // Función para manejar la acción 'ALIMENTAR'
   const handleFeed = async () => {
     if (!isAuthenticated()) {
-      alert("No estás autenticado. Inicia sesión para realizar esta acción.");
       return;
     }
 
@@ -78,20 +76,15 @@ export default function VirtualPet() {
       const url = `http://localhost:8080/pets/${petId}/feed`;
       const token = getToken();
 
-      const response = await fetch(url, {
+      await fetch(url, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
-
-      if (response.ok) {
-        alert("Acción 'ALIMENTAR' realizada con éxito.");
-      }
     } catch (error) {
       console.error("Error al realizar la acción 'ALIMENTAR':", error);
-      alert("No se pudo realizar la acción 'ALIMENTAR'.");
     }
   };
 
@@ -119,7 +112,7 @@ export default function VirtualPet() {
         </div>
       </div>
       <div className="pet-image">
-        <img src={petImage} alt={petCharacter} className="character-img" />
+        <ChangePetImages petCharacter={pet.petCharacter} energy={energy} hunger={hunger} />
       </div>
       <div className="action-buttons">
         <button onClick={handlePlay} className="btn-play">JUGAR</button>

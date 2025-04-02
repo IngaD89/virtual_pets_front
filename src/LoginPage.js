@@ -33,7 +33,7 @@ function LoginPage() {
         localStorage.setItem('authToken', data.token);
         alert('Inicio de sesión exitoso');
         // Redirigir al usuario a la página principal, si es necesario
-         navigate("/home");
+         navigate("/");
       } else {
         setError('Credenciales incorrectas');
       }

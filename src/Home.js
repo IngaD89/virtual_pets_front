@@ -11,6 +11,7 @@ export default function Home() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [decodedToken, setDecodedToken] = useState(null);
 
+  // Verifica el rol del usuario, decodificando el token
   const checkUserRole = () => {
     const token = getToken();
     if (!token) return;
@@ -24,10 +25,11 @@ export default function Home() {
     }
   };
 
+  // Función para obtener las mascotas del backend
   const fetchPets = useCallback(async () => {
     if (!isAuthenticated()) {
       setError("No estás autenticado");
-      navigate("/login");
+      navigate("/login"); // Redirige al login si no está autenticado
       return;
     }
 
@@ -46,10 +48,17 @@ export default function Home() {
     }
   }, [decodedToken, isAdmin, navigate]);
 
+  // Verifica la autenticación y el rol al inicio
   useEffect(() => {
-    checkUserRole();
-  }, []);
+    if (!isAuthenticated()) {
+      navigate("/login"); // Si no está autenticado, redirige al login
+      return;
+    }
 
+    checkUserRole(); // Verifica el rol si está autenticado
+  }, [navigate]); // Se ejecuta solo una vez al montar el componente
+
+  // Llama a fetchPets solo después de que se haya decodificado el token
   useEffect(() => {
     if (decodedToken) {
       fetchPets();
@@ -61,7 +70,7 @@ export default function Home() {
   };
 
   const handleViewPet = (petId) => {
-    navigate(`/virtual-pet/${petId}`); // Solo redirige
+    navigate(`/pet-details/${petId}`); // Solo redirige
   };
 
   const handleDeletePet = async (petId) => {
@@ -121,9 +130,8 @@ export default function Home() {
                       onClick={() => handleViewPet(pet.id)}
                       className="view-button pet-card-button"
                     >
-                      👁
+                      👀
                     </button>
-                    <button className="edit-button pet-card-button"> ✏ </button>
                     <button
                       onClick={() => handleDeletePet(pet.id)}
                       className="delete-button pet-card-button"
