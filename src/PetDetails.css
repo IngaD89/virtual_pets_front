@@ -80,11 +80,11 @@
 
 /* Estilo de la imagen de la mascota */
 .character-img {
-  max-width: 150px;   /* Tamaño máximo ajustado */
-  max-height: 150px;  /* Tamaño máximo ajustado */
-  width: auto;
-  height: auto;
-  object-fit: contain; /* Ajusta la imagen sin distorsionarla */
+   max-width: 300px;   /* Tamaño máximo ajustado */
+   max-height: 300px;  /* Tamaño máximo ajustado */
+   width: auto;
+   height: auto;
+   object-fit: contain;  /* Ajusta la imagen sin distorsionarla */
 }
 
 /* Botones de acción */

@@ -18,7 +18,7 @@ const ChangePetImages = ({ petCharacter, energy, hunger }) => {
     setImage(petImages[formattedCharacter]?.[petType]);
   }, [formattedCharacter, energy, hunger]);
 
-  return <img src={image} alt={`Mascota ${formattedCharacter}`} />;
+  return <img src={image} alt={`Mascota ${formattedCharacter}`} className="character-img" />;
 };
 
 export default ChangePetImages;
